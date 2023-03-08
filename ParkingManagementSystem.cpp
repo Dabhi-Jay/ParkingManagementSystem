@@ -100,10 +100,10 @@ vector<string> splitByDelimeter(const string &s,char ch)
 }
 int main()
 {
+    vector<string> ans;
     int n = 5;
     int x = 10;
-    // vector<string> reservedSlots = {"A-1", "A-10", "B-2", "B-5", "C-1", "C-8", "D-2", "D-4", "E-5", "E-10"};
-    vector<string> reservedSlots = {"A-1", "A-10", "B-2"};
+    vector<string> reservedSlots = {"A-1", "A-10", "B-2", "B-5", "C-1", "C-8", "D-2", "D-4", "E-5", "E-10"};
     int z=reservedSlots.size();
     vector<vector<int>> matrix;
 
@@ -158,7 +158,7 @@ int main()
             {
                 bool flag = false;
                 int index;
-                for (int i = 0; i < number.size(); i++)
+                for (int i = number.size(); i >=0; i--)
                 {
                     if (inp[1] == number[i])
                     {
@@ -201,7 +201,7 @@ int main()
                                 int l = (60 - stoi(timeIn[i].substr(3, 2)));
                                 int m = stoi(timeOut[i].substr(0, 2));
                                 int p = stoi(timeIn[i].substr(0, 2)) + 1;
-                                m = (m - p) * 60;
+                                m = ((m - p) * 60);
                                 int o = (stoi(timeOut[i].substr(3, 2)));
                                 minutes += l + m + o;
                             }
@@ -241,13 +241,13 @@ int main()
                 }
             }
         }
+
         if (input == "GENERATE REPORT")
         {
             break;
         }
     }
     cout << "PARKING SLOT, CAR NO, CHECK IN TIME, CHECK OUT TIME, CHARGES, CATEGORY\n";
-    vector<string> ans;
     string temporary = "";
     for (int index = 0; index < timeIn.size(); index++)
     {
