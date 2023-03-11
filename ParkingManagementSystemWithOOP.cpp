@@ -63,11 +63,22 @@ class System
     private:
             int calculateMinutes(Vehicles &,int &);
     public:
-            int n=5,x=10;
-            vector<string> reservedSlots = {"A-1", "A-10", "B-2", "B-5", "C-1", "C-8", "D-2", "D-4", "E-5", "E-10"};
-            int numberOfReserveSlots=reservedSlots.size();
+            int n,x;
+            vector<string> reservedSlots;
+            void setNumberOfFloors(int n)
+            {
+                this->n=n;
+            }
+            void setNumberOfSlotsPerFloor(int x)
+            {
+                this->x=x;
+            }
+            void setReservedSlots(vector<string>&v)
+            {
+                reservedSlots=v;
+            }
             vector<vector<int>> matrix;
-            bool checkin(string &,Vehicles &);
+            bool checkin(string &,Vehicles &,System &);
             void checkout(Vehicles &,string ,string );
             void generateReport(Vehicles &,vector<string>&);
 };
@@ -118,7 +129,7 @@ int System :: calculateMinutes(Vehicles &v,int &i)
     return minutes;
 }
 //Allocates slots to vehicle if available
-bool System::checkin(string &s, Vehicles &v)
+bool System::checkin(string &s, Vehicles &v,System &sys)
 {
     int count = 0;
     int x = -1, y = -1;
@@ -147,7 +158,7 @@ bool System::checkin(string &s, Vehicles &v)
             {
                 count++;
             }
-            if (count == numberOfReserveSlots)
+            if (count == sys.reservedSlots.size())
             {
                 i = 0;
                 j = -1;
@@ -253,6 +264,22 @@ void System ::generateReport(Vehicles &v,vector<string>&report)
 int main()
 {
     System s;
+    int n,x,m;
+    cout<<"Enter number of floors\n";
+    cin>>n;
+    cout<<"Enter number of slots per floor\n";
+    cin>>x;
+    cout<<"Enter number of reserved slots\n";
+    cin>>m;
+    vector<string>r(m);
+    cout<<"Enter "<<m<<" reserved slots\n";
+    for(int i=0;i<m;i++)
+    {
+        cin>>r[i];
+    }
+    s.setNumberOfFloors(n);
+    s.setNumberOfSlotsPerFloor(x);
+    s.setReservedSlots(r);
     // Creating matrix where each entry is 0 or 1 or 2 or 3 as their value
     // 0 represents non reserved slots are not filled yet
     // 1 represents reserved slots are not filled yet
@@ -279,6 +306,8 @@ int main()
     }
     Vehicles v;           //Contains information about vehicle
     vector<string>report; //Contains information about system
+    cin.get();
+    cout<<"Enter inputs\n";
     while(true)
     {
         string input;
@@ -286,7 +315,7 @@ int main()
         vector<string> inp = splitByDelimeter(input,' ');
         if(inp[0]=="CHECKIN")
         {
-            if (s.checkin(inp[3], v))
+            if (s.checkin(inp[3], v,s))
             {
                 v.numberPlate.push_back(inp[1]);
                 v.timeIn.push_back(inp[2]);
